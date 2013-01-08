@@ -1,10 +1,10 @@
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
-  #load_and_authorize_resource
+  load_and_authorize_resource #подгружаем на все экшены права доступа и на те методы на которые нет описание мы получаем запрет
+  #load_resource
 
   def index
-    authorize! :index, :users
     @posts = Post.all
 
     respond_to do |format|
@@ -16,8 +16,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-    #@post = Post.find(params[:id])
-    @post = Post.find(params[:id])
+    #authorize! :show, @post #если использовать эту строку то мы атвоматом подгружаем к этому экшену наши права
 
     respond_to do |format|
       format.html # show.html.erb

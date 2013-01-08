@@ -12,11 +12,11 @@ ECHO = $(ECHO1:0=@echo)
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /Users/igorgurko/.rbenv/versions/1.9.3-p327/include/ruby-1.9.1
-hdrdir = /Users/igorgurko/.rbenv/versions/1.9.3-p327/include/ruby-1.9.1
-arch_hdrdir = /Users/igorgurko/.rbenv/versions/1.9.3-p327/include/ruby-1.9.1/$(arch)
+topdir = /home/igor/.rbenv/versions/1.9.3-p194/include/ruby-1.9.1
+hdrdir = /home/igor/.rbenv/versions/1.9.3-p194/include/ruby-1.9.1
+arch_hdrdir = /home/igor/.rbenv/versions/1.9.3-p194/include/ruby-1.9.1/$(arch)
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/Users/igorgurko/.rbenv/versions/1.9.3-p327
+prefix = $(DESTDIR)/home/igor/.rbenv/versions/1.9.3-p194
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
 exec_prefix = $(prefix)
 vendorhdrdir = $(rubyhdrdir)/vendor_ruby
@@ -57,55 +57,53 @@ CC = gcc
 CXX = g++
 LIBRUBY = $(LIBRUBY_A)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = 
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static
-empty =
-OUTFLAG = -o $(empty)
-COUTFLAG = -o $(empty)
+LIBRUBYARG_SHARED = -Wl,-R -Wl,$(libdir) -L$(libdir) 
+LIBRUBYARG_STATIC = -Wl,-R -Wl,$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)-static
+OUTFLAG = -o 
+COUTFLAG = -o 
 
 RUBY_EXTCONF_H = 
 cflags   =  $(optflags) $(debugflags) $(warnflags)
 optflags = -O3
 debugflags = -ggdb
-warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wshorten-64-to-32 -Wimplicit-function-declaration
-CFLAGS   = -fno-common $(cflags)  -pipe -O3 -Wall -O0 -ggdb $(ARCH_FLAG)
+warnflags = -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration
+CFLAGS   = -fPIC $(cflags) -O3 -Wall -O0 -ggdb $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
-DEFS     = 
-CPPFLAGS = -DJSON_GENERATOR -I'/Users/igorgurko/.rbenv/versions/1.9.3-p327/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE $(DEFS) $(cppflags)
+DEFS     = -D_FILE_OFFSET_BITS=64
+CPPFLAGS = -DJSON_GENERATOR -I'/home/igor/.rbenv/versions/1.9.3-p194/include'  $(DEFS) $(cppflags)
 CXXFLAGS = $(CFLAGS) $(cxxflags)
-ldflags  = -L. -L'/Users/igorgurko/.rbenv/versions/1.9.3-p327/lib' 
-dldflags = -Wl,-undefined,dynamic_lookup -Wl,-multiply_defined,suppress -Wl,-flat_namespace
+ldflags  = -L. -L'/home/igor/.rbenv/versions/1.9.3-p194/lib'  -rdynamic -Wl,-export-dynamic
+dldflags = 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
-LDSHARED = $(CC) -dynamic -bundle
-LDSHAREDXX = $(CXX) -dynamic -bundle
+LDSHARED = $(CC) -shared
+LDSHAREDXX = $(CXX) -shared
 AR = ar
 EXEEXT = 
 
 RUBY_BASE_NAME = ruby
 RUBY_INSTALL_NAME = ruby
 RUBY_SO_NAME = ruby
-arch = x86_64-darwin11.4.2
+arch = i686-linux
 sitearch = $(arch)
 ruby_version = 1.9.1
-ruby = /Users/igorgurko/.rbenv/versions/1.9.3-p327/bin/ruby
+ruby = /home/igor/.rbenv/versions/1.9.3-p194/bin/ruby
 RUBY = $(ruby)
 RM = rm -f
 RM_RF = $(RUBY) -run -e rm -- -rf
-RMDIRS = rmdir -p
-MAKEDIRS = mkdir -p
+RMDIRS = rmdir --ignore-fail-on-non-empty -p
+MAKEDIRS = /bin/mkdir -p
 INSTALL = /usr/bin/install -c
 INSTALL_PROG = $(INSTALL) -m 0755
 INSTALL_DATA = $(INSTALL) -m 644
 COPY = cp
-TOUCH = exit >
 
 #### End of system configuration section. ####
 
 preload = 
 
 libpath = . $(libdir)
-LIBPATH =  -L. -L$(libdir)
+LIBPATH =  -L. -L$(libdir) -Wl,-R$(libdir)
 DEFFILE = 
 
 CLEANFILES = mkmf.log
@@ -116,23 +114,23 @@ extout =
 extout_prefix = 
 target_prefix = /json/ext
 LOCAL_LIBS = 
-LIBS =   -lpthread -ldl -lobjc 
+LIBS =   -lpthread -lrt -ldl -lcrypt -lm   -lc
 SRCS = generator.c
 OBJS = generator.o
 TARGET = generator
-DLLIB = $(TARGET).bundle
+DLLIB = $(TARGET).so
 EXTSTATIC = 
 STATIC_LIB = 
 
 BINDIR        = $(bindir)
 RUBYCOMMONDIR = $(sitedir)$(target_prefix)
-RUBYLIBDIR = /Users/igorgurko/projects/ruby/cancan/vendor/gems/ruby/1.9.1/gems/json-1.7.6/lib$(target_prefix)
-RUBYARCHDIR = /Users/igorgurko/projects/ruby/cancan/vendor/gems/ruby/1.9.1/gems/json-1.7.6/lib$(target_prefix)
+RUBYLIBDIR = /home/igor/projects/ruby/cancan/vendor/gems/ruby/1.9.1/gems/json-1.7.6/lib$(target_prefix)
+RUBYARCHDIR = /home/igor/projects/ruby/cancan/vendor/gems/ruby/1.9.1/gems/json-1.7.6/lib$(target_prefix)
 HDRDIR        = $(rubyhdrdir)/ruby$(target_prefix)
 ARCHHDRDIR    = $(rubyhdrdir)/$(arch)/ruby$(target_prefix)
 
 TARGET_SO     = $(DLLIB)
-CLEANLIBS     = $(TARGET).bundle 
+CLEANLIBS     = $(TARGET).so 
 CLEANOBJS     = *.o  *.bak
 
 all:    $(DLLIB)
@@ -157,21 +155,19 @@ distclean: clean distclean-so distclean-rb-default distclean-rb
 realclean: distclean
 install: install-so install-rb
 
+install-so: $(RUBYARCHDIR)
 install-so: $(RUBYARCHDIR)/$(DLLIB)
 $(RUBYARCHDIR)/$(DLLIB): $(DLLIB)
-	-$(Q)$(MAKEDIRS) $(@D)
+	@-$(MAKEDIRS) $(@D)
 	$(INSTALL_PROG) $(DLLIB) $(@D)
-clean-static::
-	-$(Q)$(RM) $(STATIC_LIB)
 install-rb: pre-install-rb install-rb-default
 install-rb-default: pre-install-rb-default
 pre-install-rb: Makefile
 pre-install-rb-default: Makefile
 pre-install-rb-default:
 	$(ECHO) installing default generator libraries
-./.RUBYARCHDIR.time:
-	$(Q) $(MAKEDIRS) $(RUBYARCHDIR)
-	$(Q) $(TOUCH) $@
+$(RUBYARCHDIR):
+	$(Q) $(MAKEDIRS) $@
 
 site-install: site-install-so site-install-rb
 site-install-so: install-so
@@ -209,7 +205,7 @@ site-install-rb: install-rb
 
 $(DLLIB): $(OBJS) Makefile
 	$(ECHO) linking shared-object json/ext/$(DLLIB)
-	-$(Q)$(RM) $(@)
+	@-$(RM) $(@)
 	$(Q) $(LDSHARED) -o $@ $(OBJS) $(LIBPATH) $(DLDFLAGS) $(LOCAL_LIBS) $(LIBS)
 
 

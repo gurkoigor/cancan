@@ -1,10 +1,10 @@
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
-  load_and_authorize_resource
+  #load_and_authorize_resource
 
   def index
-    authorize! :users, :index
+    authorize! :index, :users
     @posts = Post.all
 
     respond_to do |format|
